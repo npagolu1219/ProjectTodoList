@@ -1,0 +1,81 @@
+<!doctype html>
+<html ng-app="todoApp">
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+<script src="//use.edgefonts.net/vast-shadow:n4:all;megrim.js"></script>
+<link rel="stylesheet" type="text/css" href="css/styles.css" />
+</head>
+<body>
+<div class="todo-wrapper" ng-controller="TodoCtrl">
+  <h2>You've got <span class="emphasis">{{getTotalTodos()}}</span> things to do</h2>
+    <form>
+    <input class="add-input" placeholder="I need to..." type="text" ng-model="formTodoText" ng-model-instant required/>
+     <select class="add-select" ng-model="formTodoStatus">
+      	<option>Pending</option>
+      	<option>WIP</option>
+      	<option>Done</option>
+      </select>
+    <button class="add-btn" ng-click="addTodo()">
+    <h2>Add</h2>
+    </button>
+  </form>
+  <input class="search-input" type="search" ng-model="search.text" placeholder="Search Here...."><br>
+  <ul>
+    <li ng-repeat="todo in todos | filter:search:strict">
+     <!-- <input type="checkbox" ng-model="todo.done"/>-->
+     <span> {{todo.serial}}. </span>
+      <span class="done-{{todo.done}}" ng-click="edit(task, $index)">{{todo.text}}</span> 
+      <button class="status-btn">{{todo.ststus}}</button>
+      </li>
+  </ul>
+
+</div>
+</body>
+<script>
+var todoApp = angular.module( "todoApp", [] );
+function TodoCtrl($scope) {
+  $scope.todos = [
+    {serial:"1",text:'Learn AngularJS', done:false, ststus:'Pending...'},         
+    {serial:"2",text: 'Build an app', done:false, ststus:'Done'},
+	  {serial:"3",text:'Learn AngularJS 2.0', done:false, ststus:'WIP'},         
+    {serial:"4",text: 'Build an app Angular 2.0', done:false, ststus:'Done'}
+  ];
+  $scope.getTotalTodos = function () {
+    return $scope.todos.length;
+  };
+  $scope.addTodo = function () {
+    $scope.todos.push({text:$scope.formTodoText, done:false});
+	  var pushEle=$scope.todos.text;
+	//$scope.todos.push({ststus:$scope.formTodoStatus});
+    $scope.formTodoText = '';
+	  if(pushEle==0){
+		  alert("Add something");
+	  }
+	  
+  };
+	$scope.edit = function (task, index) {
+		alert();
+    $scope.formTodoText = task.text;
+    $scope.done = task.done;
+    $scope.index = index;
+  };
+	todoApp.config(function( $routeProvider ){
+		$routeProvider
+			.when(
+				"/home",
+				{
+					action: "splash.home"
+				}
+			)
+			.otherwise(
+				{
+					redirectTo: "/home"
+				}
+			)
+		;
+
+	});
+}
+</script>
+</html>
